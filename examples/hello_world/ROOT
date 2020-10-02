@@ -1,0 +1,5 @@
+session hello = HOL +
+  theories
+    Hello
+  document_files
+    "root.tex"

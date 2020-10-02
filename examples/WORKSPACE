@@ -1,0 +1,8 @@
+local_repository(
+    name = "rules_isabelle",
+    path = ".."
+)
+
+load("@rules_isabelle//isabelle:repositories.bzl", "isabelle_repository")
+
+isabelle_repository()
