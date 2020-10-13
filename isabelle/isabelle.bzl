@@ -97,6 +97,24 @@ def _isabelle_html_impl(ctx):
 
     return [DefaultInfo(files = depset([output_website]))]
 
+def _isabelle_snippet_impl(ctx):
+    ctx.actions.run(
+        executable = ctx.executable._build_snippet,
+        arguments = [
+            ctx.executable._compiler.path,
+            ctx.file.root.dirname,
+            ctx.attr.session,
+            ctx.outputs.snippet.path,
+        ],
+        inputs = depset(
+            direct = [ctx.file.root] + ctx.files.srcs,
+        ),
+        outputs = [ctx.outputs.snippet],
+        tools = [ctx.executable._compiler]
+    )
+
+    return [DefaultInfo(files = depset([ctx.outputs.snippet]))]
+
 
 _isabelle_args = {
     "session": attr.string(mandatory = True),
@@ -135,6 +153,19 @@ isabelle_html = rule(
     attrs = dict(_isabelle_args.items() + {
         "_build_html": attr.label(
             default = "build_html.sh",
+            allow_single_file = True,
+            executable = True,
+            cfg = "host"
+        )
+    }.items()),
+)
+
+isabelle_snippet = rule(
+    implementation = _isabelle_snippet_impl,
+    attrs = dict(_isabelle_args.items() + {
+        "snippet": attr.output(),
+        "_build_snippet": attr.label(
+            default = "build_snippet.sh",
             allow_single_file = True,
             executable = True,
             cfg = "host"
