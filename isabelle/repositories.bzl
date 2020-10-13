@@ -61,7 +61,7 @@ def _provide(ctx):
     return [
         IsabelleProvider(
             executable = "bin/isabelle",
-            release = """ + release + """
+            release = '""" + release + """'
         ),
     ]
 
