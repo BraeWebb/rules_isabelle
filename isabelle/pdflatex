@@ -1,0 +1,5 @@
+#!/bin/bash
+# a little cheeky fakeness to fool our good friend Isabelle
+# Isabelle is going to try and call pdflatex but we want to use
+# Bazel to build the PDF output
+touch root.pdf

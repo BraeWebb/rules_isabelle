@@ -7,7 +7,7 @@ SUPPORTED_RELEASES = [
 ]
 PLATFORMS = {
     "linux": "linux",
-    "macos": "macos",
+    "mac os x": "macos",
 }
 
 SHAS = {
@@ -43,19 +43,26 @@ def _isabelle_repository_impl(ctx):
     if platform not in PLATFORMS:
         fail("Unsupported operating system: " + platform +
              " (" + ", ".join(PLATFORMS) + ") supported")
+    platform = PLATFORMS[platform]
     
     remote = _binary_url(release, platform)
     sha = _binary_sha(release, platform)
     prefix = _binary_prefix(release, platform)
 
+    # Mac dist nests within Isabelle
+    output = ""
+    if platform == "linux":
+        output = "Isabelle"
+
     ctx.download_and_extract(
         url = [remote],
         sha256 = sha,
         stripPrefix = prefix,
+        output = output,
     )
 
     ctx.file("BUILD", """
-exports_files(glob(["bin/**/*"]))
+exports_files(glob(["Isabelle/bin/**/*"]))
 """)
 
 
