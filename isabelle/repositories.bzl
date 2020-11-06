@@ -61,8 +61,31 @@ def _isabelle_repository_impl(ctx):
         output = output,
     )
 
+    ctx.file("provider.bzl", """
+IsabelleProvider = provider(fields=["executable", "release"])
+
+def _provide(ctx):
+    return [
+        IsabelleProvider(
+            executable = "bin/isabelle",
+            release = '""" + release + """'
+        ),
+    ]
+
+isabelle_provider = rule(
+    implementation = _provide,
+)
+""")
+
     ctx.file("BUILD", """
+load("provider.bzl", "isabelle_provider")
+
 exports_files(glob(["Isabelle/bin/**/*"]))
+
+isabelle_provider(
+    name = "provider",
+    visibility = ["//visibility:public"],
+)
 """)
 
 

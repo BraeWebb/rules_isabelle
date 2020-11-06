@@ -9,7 +9,7 @@ srcs_dest=$6
 
 # add fake pdflatex script to PATH
 DIR=$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )
-export PATH="${PATH}:${DIR}"
+export PATH="${DIR}:${PATH}"
 
 # build tex files with Isabelle
 build_dir="output"

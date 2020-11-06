@@ -1,4 +1,6 @@
 exports_files([
     "build_document.sh",
-    "pdflatex"
+    "build_html.sh",
+    "build_snippet.sh",
+    "pdflatex",
 ])
